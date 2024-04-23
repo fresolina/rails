@@ -80,8 +80,8 @@ module ActiveRecord
         #       # Should return a scope, you can call 'super' here etc.
         #     end
         #   end
-        def default_scope(scope = nil)
-          scope = Proc.new if block_given?
+        def default_scope(&scope)
+          scope = proc {} unless block_given?
 
           if scope.is_a?(Relation) || !scope.respond_to?(:call)
             raise ArgumentError,
