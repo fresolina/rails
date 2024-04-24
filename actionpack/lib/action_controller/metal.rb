@@ -30,8 +30,12 @@ module ActionController
       end
     end
 
-    def build(action, &app)
-      app = proc {} unless block_given?
+    def build(action, app = nil, &block_fix)
+      if block_given?
+        app ||= block_fix
+      else
+        app = proc {}
+      end
       action = action.to_s
 
       middlewares.reverse.inject(app) do |a, middleware|

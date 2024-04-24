@@ -16,8 +16,12 @@ module ActiveSupport
         super
       end
 
-      def subscribe(pattern = nil, &block)
-        block = proc {} unless block_given?
+      def subscribe(pattern = nil, block = nil, &block_fix)
+        if block_given?
+          block ||= block_fix
+        else
+          block = proc {}
+        end
         subscriber = Subscribers.new pattern, block
         synchronize do
           @subscribers << subscriber
